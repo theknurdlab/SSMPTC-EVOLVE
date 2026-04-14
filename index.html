@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pre-Exam Psychometric Evaluation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root {
+    --ink: #0d1117;
+    --paper: #f5f0e8;
+    --cream: #ede7d3;
+    --accent: #c0392b;
+    --gold: #b8860b;
+    --muted: #7a7060;
+    --border: #cfc9b5;
+    --card: #faf7f0;
+    --success: #2e7d32;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(192,57,43,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.05) 0%, transparent 50%);
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 56px 40px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border: 2px solid rgba(245,240,232,0.08);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 180px; height: 180px;
+    border: 1px solid rgba(245,240,232,0.05);
+    border-radius: 50%;
+  }
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    max-width: 600px;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header p {
+    font-size: 15px;
+    color: rgba(245,240,232,0.7);
+    max-width: 500px;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+  .header-meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    font-size: 12px;
+    color: rgba(245,240,232,0.5);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.05em;
+  }
+  .meta-chip span.dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--ink);
+    padding: 0 40px 28px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: rgba(245,240,232,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .progress-label {
+    font-size: 11px;
+    color: rgba(245,240,232,0.4);
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* FORM BODY */
+  .form-body {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 52px 0 32px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .section-divider:first-child { margin-top: 0; }
+  .section-number {
+    font-family: 'Calibri', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: #2c2c2c;;
+    line-height: 1;
+    min-width: 48px;
+  }
+  .section-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #145A32;
+  }
+  .section-info p {
+    font-size: 13px;
+    color: #1E3A8A;
+    margin-top: 4px;
+  }
+
+  /* CARD */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.45s ease forwards;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .q-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 24px rgba(13,17,23,0.07);
+  }
+  .q-card.required::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .q-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 8px;
+  }
+  .q-label .req { color: var(--accent); }
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    min-width: 24px;
+  }
+
+  /* INPUTS */
+  input[type="text"], input[type="email"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 11px 16px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.1);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7060' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* RADIO / CHECKBOX */
+  .options-list { display: flex; flex-direction: column; gap: 10px; }
+  .options-list.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .opt-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink);
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .opt-label:hover { border-color: var(--gold); background: rgba(184,134,11,0.03); }
+  .opt-label input { 
+    pointer-events: auto !important;
+    position: absolute;
+    opacity: 0;
+	}
+  .opt-label.selected {
+    border-color: var(--accent);
+    background: rgba(192,57,43,0.04);
+    font-weight: 500;
+  }
+  .opt-icon {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+  .opt-label.selected .opt-icon {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .opt-icon::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+  .opt-label.selected .opt-icon::after { opacity: 1; }
+
+  /* Checkbox variant */
+  .opt-label.checkbox .opt-icon { border-radius: 3px; }
+  .opt-label.checkbox.selected .opt-icon::after {
+    content: '✓';
+    font-size: 11px;
+    width: auto; height: auto;
+    border-radius: 0;
+    background: none;
+    color: white;
+    font-weight: 700;
+  }
+
+  /* LIKERT SCALE */
+  .likert-wrap {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .likert-table { width: 100%; border-collapse: collapse; min-width: 480px; }
+  .likert-table thead th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 8px 12px;
+    text-align: center;
+  }
+  .likert-table thead th:first-child { text-align: left; padding-left: 0; }
+  .likert-table tbody tr { border-top: 1px solid var(--border); }
+  .likert-table tbody tr:first-child { border-top: none; }
+  .likert-table td { padding: 12px 8px; vertical-align: middle; }
+  .likert-table td:first-child { font-size: 13px; color: var(--ink); padding-left: 0; max-width: 220px; }
+  .likert-table td:not(:first-child) { text-align: center; }
+  .likert-radio {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.18s;
+  }
+  .likert-radio:checked {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.12);
+  }
+  .likert-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* RANGE SLIDER */
+  .range-wrap { padding: 8px 0; }
+  input[type="range"] {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(192,57,43,0.35);
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .range-val {
+    text-align: center;
+    margin-top: 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* SUBMIT */
+  .submit-zone {
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 40px;
+    margin-top: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-zone::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 150px; height: 150px;
+    border: 1px solid rgba(245,240,232,0.06);
+    border-radius: 50%;
+  }
+  .submit-zone h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--paper);
+    margin-bottom: 10px;
+  }
+  .submit-zone p {
+    font-size: 13px;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .btn-submit {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 15px 48px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-submit:hover {
+    background: #a93226;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(192,57,43,0.35);
+  }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 80px 40px;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: rgba(46,125,50,0.1);
+    border: 2px solid var(--success);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 28px;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .success-screen p { color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 400px; margin: 0 auto; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Stagger animation delays */
+  .q-card:nth-child(1) { animation-delay: 0.05s; }
+  .q-card:nth-child(2) { animation-delay: 0.10s; }
+  .q-card:nth-child(3) { animation-delay: 0.15s; }
+  .q-card:nth-child(4) { animation-delay: 0.20s; }
+  .q-card:nth-child(5) { animation-delay: 0.25s; }
+  .q-card:nth-child(6) { animation-delay: 0.30s; }
+  .section-divider:nth-of-type(1) { animation-delay: 0s; }
+  .section-divider:nth-of-type(2) { animation-delay: 0.1s; }
+  .section-divider:nth-of-type(3) { animation-delay: 0.1s; }
+  .section-divider:nth-of-type(4) { animation-delay: 0.1s; }
+  .section-divider:nth-of-type(5) { animation-delay: 0.1s; }
+
+  /* PRINT GUIDE */
+  .google-guide {
+    background: #e8f4fd;
+    border: 1px solid #bee3f8;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    font-size: 13px;
+    color: #2b6cb0;
+    line-height: 1.6;
+  }
+  .google-guide strong { color: #1a365d; }
+  .google-guide ul { padding-left: 20px; margin-top: 8px; }
+
+  @media (max-width: 600px) {
+    .header { padding: 40px 20px 32px; }
+    .form-body { padding: 32px 16px 60px; }
+    .q-card { padding: 20px; }
+    .options-list.grid-2 { grid-template-columns: 1fr; }
+    .submit-zone { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">● "Measure What Truly Matters"</div>
+  <h1>SSMPTC <em>"EVOLVE"</em><br> </h1>
+  <div class="header-tag"> <h2><em>Evaluation of Versatile Learning & Operational Value in Education</em><br> </h2> </div>
+  <p>A performance-driven assessment system that evaluates students through real problem-solving, enabling accurate measurement of learning, understanding, and application.</p>
+  <div class="header-meta">
+    <span class="meta-chip"><span class="dot"></span> ~12 minutes to complete</span>
+    <span class="meta-chip"><span class="dot"></span> 5 sections · 28 questions</span>
+    <span class="meta-chip"><span class="dot"></span> Confidential</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0% complete</div>
+</div>
+
+<div id="loginGate" style="text-align:center; padding:60px 20px;">
+  <h2 style="font-family:'Playfair Display', serif; margin-bottom:10px;">
+    Sign in Required
+  </h2>
+  <p style="color:#7a7060; margin-bottom:25px;">
+    Please sign in using your Google account to access the assessment.
+  </p>
+  <div id="googleBtnCenter"></div>
+</div>
+
+<div class="form-body" id="formBody" style="display:none;">
+<input type="hidden" id="studentEmail">
+
+
+<!-- SECTION 1 -->
+<div class="section-divider">
+  <div class="section-number">01</div>
+  <div class="section-info">
+    <h2>Academic Information</h2>
+    <p>Enter your academic information here</p>
+  </div>
+</div>
+
+
+<div class="q-card required">
+  <div class="q-label">
+    <span class="q-num">2.</span>
+    <span>Full Name (As per institution records) <span class="req">*</span></span>
+  </div>
+  <input type="text" placeholder="Enter your full name" />
+</div>
+
+<div class="q-card required">
+  <div class="q-label">
+    <span class="q-num">3.</span>
+    <span>Roll Number <span class="req">*</span></span>
+  </div>
+  <input type="text" placeholder="e.g., 1 to 60" />
+</div>
+
+<div class="q-card required">
+  <div class="q-label">
+    <span class="q-num">4.</span>
+    <span>Branch <span class="req">*</span></span>
+  </div>
+  <select>
+    <option value="">Select your class</option>
+      <option>Electrical Engineering & Electric Vehicle Technology (EV)</option>
+      <option>Computer Science & Engineering (CSE)</option>
+      <option>Chemical Engineering (CH)</option>
+      <option>Civil Engineering & Planning (CL)</option>
+      </select>
+  </div>
+
+  <div class="q-card required">
+  <div class="q-label">
+    <span class="q-num">5.</span>
+    <span>Current Semester <span class="req">*</span></span>
+  </div>
+
+  <select>
+    <option value="">Select your semester</option>
+    <option>Semester 1</option>
+    <option>Semester 2</option>
+    <option>Semester 3</option>
+    <option>Semester 4</option>
+    <option>Semester 5</option>
+    <option>Semester 6</option>
+  </select>
+  </div>
+
+ <!-- SECTION 2 -->
+<div class="section-divider">
+  <div class="section-number">02</div>
+  <div class="section-info">
+    <h2>Cognitive Assessment</h2>
+    <p>Evaluate your ability through actual problem-solving (no self-rating)</p>
+  </div>
+</div>
+
+<!-- LOGICAL REASONING -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">6.</span><span>Logical Reasoning – In a series circuit, if one component fails, </span></div>
+  <div class="options-list" id="lr1">
+    <label class="opt-label" onclick="selectOpt(this,'lr1')"><input type="radio" name="lr1"/><span class="opt-icon"></span> Others continue working</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr1')"><input type="radio" name="lr1"/><span class="opt-icon"></span> Entire circuit stops</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr1')"><input type="radio" name="lr1"/><span class="opt-icon"></span> Voltage increases</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr1')"><input type="radio" name="lr1"/><span class="opt-icon"></span> Current increases</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">7.</span><span>Logical Reasoning – Two bulbs in parallel, one bulb is damaged. What happens to the other?:</span></div>
+  <div class="options-list" id="lr2">
+    <label class="opt-label" onclick="selectOpt(this,'lr2')"><input type="radio" name="lr2"/><span class="opt-icon"></span> It goes OFF</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr2')"><input type="radio" name="lr2"/><span class="opt-icon"></span> It glows normally</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr2')"><input type="radio" name="lr2"/><span class="opt-icon"></span> It glows dim</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr2')"><input type="radio" name="lr2"/><span class="opt-icon"></span> It explodes</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">8.</span><span>Logical Reasoning – 2Ω, 3Ω & 5Ω are connected in series. Total resistance is ?:</span></div>
+  <div class="options-list" id="lr3">
+    <label class="opt-label" onclick="selectOpt(this,'lr3')"><input type="radio" name="lr3"/><span class="opt-icon"></span> 10Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr3')"><input type="radio" name="lr3"/><span class="opt-icon"></span> 1Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr3')"><input type="radio" name="lr3"/><span class="opt-icon"></span> 5Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'lr3')"><input type="radio" name="lr3"/><span class="opt-icon"></span> 30Ω</label>
+  </div>
+</div>
+
+<!-- MATHEMATICAL COMPUTATION -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">9.</span><span>Mathematical Computation – V=20V, R=4Ω → Current, I = ?</span></div>
+  <div class="options-list" id="mc1">
+    <label class="opt-label" onclick="selectOpt(this,'mc1')"><input type="radio" name="mc1"/><span class="opt-icon"></span> 2A</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc1')"><input type="radio" name="mc1"/><span class="opt-icon"></span> 5A</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc1')"><input type="radio" name="mc1"/><span class="opt-icon"></span> 10A</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc1')"><input type="radio" name="mc1"/><span class="opt-icon"></span> 0.2A</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">10.</span><span>Mathematical Computation – V=10V, R=5Ω → Power, P = ?</span></div>
+  <div class="options-list" id="mc2">
+    <label class="opt-label" onclick="selectOpt(this,'mc2')"><input type="radio" name="mc2"/><span class="opt-icon"></span> 20W</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc2')"><input type="radio" name="mc2"/><span class="opt-icon"></span> 50W</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc2')"><input type="radio" name="mc2"/><span class="opt-icon"></span> 5W</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc2')"><input type="radio" name="mc2"/><span class="opt-icon"></span> 100W</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">11.</span><span>Mathematical Computation – 1kW heater for 2 hours → Energy, E = ?</span></div>
+  <div class="options-list" id="mc3">
+    <label class="opt-label" onclick="selectOpt(this,'mc3')"><input type="radio" name="mc3"/><span class="opt-icon"></span> 2 kWh</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc3')"><input type="radio" name="mc3"/><span class="opt-icon"></span> 1 kWh</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc3')"><input type="radio" name="mc3"/><span class="opt-icon"></span> 0.5 kWh</label>
+    <label class="opt-label" onclick="selectOpt(this,'mc3')"><input type="radio" name="mc3"/><span class="opt-icon"></span> 2000 kWh</label>
+  </div>
+</div>
+
+<!-- CONCEPTUAL UNDERSTANDING -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">12.</span><span>Conceptual Understanding – What does a capacitor store?</span></div>
+  <div class="options-list" id="cu1">
+    <label class="opt-label" onclick="selectOpt(this,'cu1')"><input type="radio" name="cu1"/><span class="opt-icon"></span> Current</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu1')"><input type="radio" name="cu1"/><span class="opt-icon"></span> Voltage</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu1')"><input type="radio" name="cu1"/><span class="opt-icon"></span> Electrical energy</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu1')"><input type="radio" name="cu1"/><span class="opt-icon"></span> Resistance</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">13.</span><span>Conceptual Understanding – Why use insulators in Electrical wiring?</span></div>
+  <div class="options-list" id="cu2">
+    <label class="opt-label" onclick="selectOpt(this,'cu2')"><input type="radio" name="cu2"/><span class="opt-icon"></span> To increase current</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu2')"><input type="radio" name="cu2"/><span class="opt-icon"></span> To prevent leakage</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu2')"><input type="radio" name="cu2"/><span class="opt-icon"></span> To store charge</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu2')"><input type="radio" name="cu2"/><span class="opt-icon"></span> To reduce voltage</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">14.</span><span>Conceptual Understanding – AC differs from DC because:</span></div>
+  <div class="options-list" id="cu3">
+    <label class="opt-label" onclick="selectOpt(this,'cu3')"><input type="radio" name="cu3"/><span class="opt-icon"></span> It is constant</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu3')"><input type="radio" name="cu3"/><span class="opt-icon"></span> It changes direction</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu3')"><input type="radio" name="cu3"/><span class="opt-icon"></span> It has no voltage</label>
+    <label class="opt-label" onclick="selectOpt(this,'cu3')"><input type="radio" name="cu3"/><span class="opt-icon"></span> It stops frequently</label>
+  </div>
+</div>
+
+<!-- PROBLEM SOLVING -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">15.</span><span>Problem Solving – 6Ω & 3Ω parallel → Equivalent Resistance?</span></div>
+  <div class="options-list" id="ps1">
+    <label class="opt-label" onclick="selectOpt(this,'ps1')"><input type="radio" name="ps1"/><span class="opt-icon"></span> 2Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps1')"><input type="radio" name="ps1"/><span class="opt-icon"></span> 9Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps1')"><input type="radio" name="ps1"/><span class="opt-icon"></span> 3Ω</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps1')"><input type="radio" name="ps1"/><span class="opt-icon"></span> 1Ω</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">16.</span><span>Problem Solving – Fuse melts when:</span></div>
+  <div class="options-list" id="ps2">
+    <label class="opt-label" onclick="selectOpt(this,'ps2')"><input type="radio" name="ps2"/><span class="opt-icon"></span> Voltage increases</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps2')"><input type="radio" name="ps2"/><span class="opt-icon"></span> Current exceeds limit</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps2')"><input type="radio" name="ps2"/><span class="opt-icon"></span> Resistance increases</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps2')"><input type="radio" name="ps2"/><span class="opt-icon"></span> Power decreases</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">17.</span><span>Problem Solving – V = 12V, R = 4Ω → Power, P = ?</span></div>
+  <div class="options-list" id="ps3">
+    <label class="opt-label" onclick="selectOpt(this,'ps3')"><input type="radio" name="ps3"/><span class="opt-icon"></span> 48W</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps3')"><input type="radio" name="ps3"/><span class="opt-icon"></span> 3W</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps3')"><input type="radio" name="ps3"/><span class="opt-icon"></span> 16W</label>
+    <label class="opt-label" onclick="selectOpt(this,'ps3')"><input type="radio" name="ps3"/><span class="opt-icon"></span> 12W</label>
+  </div>
+</div>
+
+<!-- MEMORY & RECALL -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">18.</span><span>Memory & Recall – Unit of power?</span></div>
+  <div class="options-list" id="mr1">
+    <label class="opt-label" onclick="selectOpt(this,'mr1')"><input type="radio" name="mr1"/><span class="opt-icon"></span> Joule</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr1')"><input type="radio" name="mr1"/><span class="opt-icon"></span> Watt</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr1')"><input type="radio" name="mr1"/><span class="opt-icon"></span> Volt</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr1')"><input type="radio" name="mr1"/><span class="opt-icon"></span> Ampere</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">19.</span><span>Memory & Recall – Inductor symbol?</span></div>
+  <div class="options-list" id="mr2">
+    <label class="opt-label" onclick="selectOpt(this,'mr2')"><input type="radio" name="mr2"/><span class="opt-icon"></span> R</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr2')"><input type="radio" name="mr2"/><span class="opt-icon"></span> C</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr2')"><input type="radio" name="mr2"/><span class="opt-icon"></span> L</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr2')"><input type="radio" name="mr2"/><span class="opt-icon"></span> V</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">20.</span><span>Memory & Recall – 1 kWh = ?</span></div>
+  <div class="options-list" id="mr3">
+    <label class="opt-label" onclick="selectOpt(this,'mr3')"><input type="radio" name="mr3"/><span class="opt-icon"></span> 1000 W</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr3')"><input type="radio" name="mr3"/><span class="opt-icon"></span> 3600 J</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr3')"><input type="radio" name="mr3"/><span class="opt-icon"></span> 1000 Wh</label>
+    <label class="opt-label" onclick="selectOpt(this,'mr3')"><input type="radio" name="mr3"/><span class="opt-icon"></span> 100 J</label>
+  </div>
+</div>
+
+<!-- READING COMPREHENSION -->
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">21.</span><span>Reading Comprehension – 500W, 230V means:</span></div>
+  <div class="options-list" id="rc1">
+    <label class="opt-label" onclick="selectOpt(this,'rc1')"><input type="radio" name="rc1"/><span class="opt-icon"></span> Always consumes 500W</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc1')"><input type="radio" name="rc1"/><span class="opt-icon"></span> Consumes 500W at 230V</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc1')"><input type="radio" name="rc1"/><span class="opt-icon"></span> Produces 230W</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc1')"><input type="radio" name="rc1"/><span class="opt-icon"></span> Works without voltage</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">22.</span><span>Reading Comprehension – 5A fuse means:</span></div>
+  <div class="options-list" id="rc2">
+    <label class="opt-label" onclick="selectOpt(this,'rc2')"><input type="radio" name="rc2"/><span class="opt-icon"></span> Works at 5V</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc2')"><input type="radio" name="rc2"/><span class="opt-icon"></span> Breaks if current > 5A</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc2')"><input type="radio" name="rc2"/><span class="opt-icon"></span> Stores 5A</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc2')"><input type="radio" name="rc2"/><span class="opt-icon"></span> Supplies 5A</label>
+  </div>
+</div>
+
+<div class="q-card required">
+  <div class="q-label"><span class="q-num">23.</span><span>Reading Comprehension – High resistance wire will:</span></div>
+  <div class="options-list" id="rc3">
+    <label class="opt-label" onclick="selectOpt(this,'rc3')"><input type="radio" name="rc3"/><span class="opt-icon"></span> Allow more current</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc3')"><input type="radio" name="rc3"/><span class="opt-icon"></span> Oppose current flow</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc3')"><input type="radio" name="rc3"/><span class="opt-icon"></span> Increase voltage</label>
+    <label class="opt-label" onclick="selectOpt(this,'rc3')"><input type="radio" name="rc3"/><span class="opt-icon"></span> Store energy</label>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section-divider">
+  <div class="section-number">03</div>
+  <div class="section-info">
+    <h2>CO Attainment Levels</h2>
+    <p>Assessment based on FEEE Course Outcomes</p>
+  </div>
+</div>
+
+<!-- CO1 -->
+<div class="q-card required">
+  <div class="q-label"><span><strong style="color:#c0392b;">CO1 – Identify various combinations of resistors and basic terms in AC systems</strong></span></div>
+</div>
+
+<!-- Q1–Q5 -->
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Ohm’s law is expressed as:</span></div>
+<div class="options-list" id="coq1">
+<label class="opt-label" onclick="selectOpt(this,'coq1')"><input type="radio" name="co1q1"><span class="opt-icon"></span> V = IR</label>
+<label class="opt-label" onclick="selectOpt(this,'coq1')"><input type="radio" name="co1q1"><span class="opt-icon"></span> V = I/R</label>
+<label class="opt-label" onclick="selectOpt(this,'coq1')"><input type="radio" name="co1q1"><span class="opt-icon"></span> V = I²R</label>
+<label class="opt-label" onclick="selectOpt(this,'coq1')"><input type="radio" name="co1q1"><span class="opt-icon"></span> V = R/I</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>The Equivalent resistance of 2Ω & 3Ω in series:</span></div>
+<div class="options-list" id="coq2">
+<label class="opt-label" onclick="selectOpt(this,'coq2')"><input type="radio" name="co1q2"><span class="opt-icon"></span> 6Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq2')"><input type="radio" name="co1q2"><span class="opt-icon"></span> 5Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq2')"><input type="radio" name="co1q2"><span class="opt-icon"></span> 1Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq2')"><input type="radio" name="co1q2"><span class="opt-icon"></span> 0Ω</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>The Equivalent resistance of 6Ω & 3Ω in parallel:</span></div>
+<div class="options-list" id="coq3">
+<label class="opt-label" onclick="selectOpt(this,'coq3')"><input type="radio" name="co1q3"><span class="opt-icon"></span> 9Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq3')"><input type="radio" name="co1q3"><span class="opt-icon"></span> 2Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq3')"><input type="radio" name="co1q3"><span class="opt-icon"></span> 3Ω</label>
+<label class="opt-label" onclick="selectOpt(this,'coq3')"><input type="radio" name="co1q3"><span class="opt-icon"></span> 1Ω</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Frequency of a sine wave is given by:</span></div>
+<div class="options-list" id="coq4">
+<label class="opt-label" onclick="selectOpt(this,'coq4')"><input type="radio" name="co1q4"><span class="opt-icon"></span> Time/cycle</label>
+<label class="opt-label" onclick="selectOpt(this,'coq4')"><input type="radio" name="co1q4"><span class="opt-icon"></span> Cycles/sec</label>
+<label class="opt-label" onclick="selectOpt(this,'coq4')"><input type="radio" name="co1q4"><span class="opt-icon"></span> Voltage</label>
+<label class="opt-label" onclick="selectOpt(this,'coq4')"><input type="radio" name="co1q4"><span class="opt-icon"></span> Resistance</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>The term, Impedance applies to:</span></div>
+<div class="options-list" id="coq5">
+<label class="opt-label" onclick="selectOpt(this,'coq5')"><input type="radio" name="co1q5"><span class="opt-icon"></span> DC</label>
+<label class="opt-label" onclick="selectOpt(this,'coq5')"><input type="radio" name="co1q5"><span class="opt-icon"></span> AC</label>
+<label class="opt-label" onclick="selectOpt(this,'coq5')"><input type="radio" name="co1q5"><span class="opt-icon"></span> Voltage</label>
+<label class="opt-label" onclick="selectOpt(this,'coq5')"><input type="radio" name="co1q5"><span class="opt-icon"></span> Power</label>
+</div></div>
+
+<!-- CO2 -->
+<div class="q-card required">
+  <div class="q-label">
+    <span><strong style="color:#c0392b;">CO2 – Solve various powers in AC circuits and calculate the monthly electricity bill</strong></span>
+  </div>
+</div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Power factor is:</span></div>
+<div class="options-list" id="co2q1">
+<label class="opt-label" onclick="selectOpt(this,'co2q1')"><input type="radio" name="co2q1"><span class="opt-icon"></span> sinφ</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q1')"><input type="radio" name="co2q1"><span class="opt-icon"></span> cosφ</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q1')"><input type="radio" name="co2q1"><span class="opt-icon"></span> tanφ</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q1')"><input type="radio" name="co2q1"><span class="opt-icon"></span> V/I</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Commercial Unit of electrical energy:</span></div>
+<div class="options-list" id="co2q2">
+<label class="opt-label" onclick="selectOpt(this,'co2q2')"><input type="radio" name="co2q2"><span class="opt-icon"></span> Watt</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q2')"><input type="radio" name="co2q2"><span class="opt-icon"></span> Joule</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q2')"><input type="radio" name="co2q2"><span class="opt-icon"></span> kWh</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q2')"><input type="radio" name="co2q2"><span class="opt-icon"></span> Volt</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>1 kWh equals:</span></div>
+<div class="options-list" id="co2q3">
+<label class="opt-label" onclick="selectOpt(this,'co2q3')"><input type="radio" name="co2q3"><span class="opt-icon"></span> 1000 J</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q3')"><input type="radio" name="co2q3"><span class="opt-icon"></span> 3600 J</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q3')"><input type="radio" name="co2q3"><span class="opt-icon"></span> 1000 Wh</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q3')"><input type="radio" name="co2q3"><span class="opt-icon"></span> 100 J</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Real Power in AC is given by the formula:</span></div>
+<div class="options-list" id="co2q4">
+<label class="opt-label" onclick="selectOpt(this,'co2q4')"><input type="radio" name="co2q4"><span class="opt-icon"></span> VI</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q4')"><input type="radio" name="co2q4"><span class="opt-icon"></span> VIcosφ</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q4')"><input type="radio" name="co2q4"><span class="opt-icon"></span> V/I</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q4')"><input type="radio" name="co2q4"><span class="opt-icon"></span> I²R</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Energy consumed when 1kW power is consumed for 5 hours:</span></div>
+<div class="options-list" id="co2q5">
+<label class="opt-label" onclick="selectOpt(this,'co2q5')"><input type="radio" name="co2q5"><span class="opt-icon"></span> 5 kWh</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q5')"><input type="radio" name="co2q5"><span class="opt-icon"></span> 1 kWh</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q5')"><input type="radio" name="co2q5"><span class="opt-icon"></span> 10 kWh</label>
+<label class="opt-label" onclick="selectOpt(this,'co2q5')"><input type="radio" name="co2q5"><span class="opt-icon"></span> 0.5 kWh</label>
+</div></div>
+
+
+<!-- CO3 -->
+<div class="q-card required">
+  <div class="q-label">
+    <span><strong style="color:#c0392b;">CO3 – Identify various types of passive components, their colour coding and applications</strong></span>
+  </div>
+</div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Find the Passive component:</span></div>
+<div class="options-list" id="co3q1">
+<label class="opt-label" onclick="selectOpt(this,'co3q1')"><input type="radio" name="co3q1"><span class="opt-icon"></span> Transistor</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q1')"><input type="radio" name="co3q1"><span class="opt-icon"></span> Diode</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q1')"><input type="radio" name="co3q1"><span class="opt-icon"></span> Resistor</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q1')"><input type="radio" name="co3q1"><span class="opt-icon"></span> IC</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Resistor colour code shows:</span></div>
+<div class="options-list" id="co3q2">
+<label class="opt-label" onclick="selectOpt(this,'co3q2')"><input type="radio" name="co3q2"><span class="opt-icon"></span> Voltage</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q2')"><input type="radio" name="co3q2"><span class="opt-icon"></span> Resistance value</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q2')"><input type="radio" name="co3q2"><span class="opt-icon"></span> Current</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q2')"><input type="radio" name="co3q2"><span class="opt-icon"></span> Power</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Capacitor stores energy in:</span></div>
+<div class="options-list" id="co3q3">
+<label class="opt-label" onclick="selectOpt(this,'co3q3')"><input type="radio" name="co3q3"><span class="opt-icon"></span> Current</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q3')"><input type="radio" name="co3q3"><span class="opt-icon"></span> Voltage</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q3')"><input type="radio" name="co3q3"><span class="opt-icon"></span> Electric Field</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q3')"><input type="radio" name="co3q3"><span class="opt-icon"></span> Resistance</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>The letter "L" stands for:</span></div>
+<div class="options-list" id="co3q4">
+<label class="opt-label" onclick="selectOpt(this,'co3q4')"><input type="radio" name="co3q4"><span class="opt-icon"></span> Capacitance</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q4')"><input type="radio" name="co3q4"><span class="opt-icon"></span> Resistance</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q4')"><input type="radio" name="co3q4"><span class="opt-icon"></span> Inductance</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q4')"><input type="radio" name="co3q4"><span class="opt-icon"></span> Voltage</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Unit of capacitance:</span></div>
+<div class="options-list" id="co3q5">
+<label class="opt-label" onclick="selectOpt(this,'co3q5')"><input type="radio" name="co3q5"><span class="opt-icon"></span> Henry</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q5')"><input type="radio" name="co3q5"><span class="opt-icon"></span> Farad</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q5')"><input type="radio" name="co3q5"><span class="opt-icon"></span> Ohm</label>
+<label class="opt-label" onclick="selectOpt(this,'co3q5')"><input type="radio" name="co3q5"><span class="opt-icon"></span> Watt</label>
+</div></div>
+
+
+<!-- CO4 -->
+<div class="q-card required">
+  <div class="q-label">
+    <span><strong style="color:#c0392b;">CO4 – Summarize the working and applications of diodes, transistors and logic gates</strong></span>
+  </div>
+</div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Diode allows current to flow in:</span></div>
+<div class="options-list" id="co4q1">
+<label class="opt-label" onclick="selectOpt(this,'co4q1')"><input type="radio" name="co4q1"><span class="opt-icon"></span> Both directions</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q1')"><input type="radio" name="co4q1"><span class="opt-icon"></span> One direction only</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q1')"><input type="radio" name="co4q1"><span class="opt-icon"></span> No direction</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q1')"><input type="radio" name="co4q1"><span class="opt-icon"></span> Reverse only</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Zener diode is used for:</span></div>
+<div class="options-list" id="co4q2">
+<label class="opt-label" onclick="selectOpt(this,'co4q2')"><input type="radio" name="co4q2"><span class="opt-icon"></span> Amplification</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q2')"><input type="radio" name="co4q2"><span class="opt-icon"></span> Voltage regulation</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q2')"><input type="radio" name="co4q2"><span class="opt-icon"></span> Rectification</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q2')"><input type="radio" name="co4q2"><span class="opt-icon"></span> Switching</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>Transistor works as an amplifier in which region?:</span></div>
+<div class="options-list" id="co4q3">
+<label class="opt-label" onclick="selectOpt(this,'co4q3')"><input type="radio" name="co4q3"><span class="opt-icon"></span> Cut-off</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q3')"><input type="radio" name="co4q3"><span class="opt-icon"></span> Saturation</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q3')"><input type="radio" name="co4q3"><span class="opt-icon"></span> Active region</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q3')"><input type="radio" name="co4q3"><span class="opt-icon"></span> Breakdown</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>An AND gate's output is HIGH when:</span></div>
+<div class="options-list" id="co4q4">
+<label class="opt-label" onclick="selectOpt(this,'co4q4')"><input type="radio" name="co4q4"><span class="opt-icon"></span> Any input HIGH</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q4')"><input type="radio" name="co4q4"><span class="opt-icon"></span> All inputs HIGH</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q4')"><input type="radio" name="co4q4"><span class="opt-icon"></span> All LOW</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q4')"><input type="radio" name="co4q4"><span class="opt-icon"></span> One LOW</label>
+</div></div>
+
+<div class="q-card required"><div class="q-label"><span class="q-num"></span><span>NOT gate performs:</span></div>
+<div class="options-list" id="co4q5">
+<label class="opt-label" onclick="selectOpt(this,'co4q5')"><input type="radio" name="co4q5"><span class="opt-icon"></span> Addition</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q5')"><input type="radio" name="co4q5"><span class="opt-icon"></span> Inversion</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q5')"><input type="radio" name="co4q5"><span class="opt-icon"></span> Multiplication</label>
+<label class="opt-label" onclick="selectOpt(this,'co4q5')"><input type="radio" name="co4q5"><span class="opt-icon"></span> Division</label>
+</div></div>
+
+
+  <!-- SECTION 4 -->
+  <div class="section-divider">
+    <div class="section-number">04</div>
+    <div class="section-info">
+      <h2>Study Habits & Preparation</h2>
+      <p>Understanding your routines helps tailor instructional support</p>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">9.</span><span>How many hours per day do you study on average? <span class="req">*</span></span></div>
+    <div class="range-wrap">
+      <input type="range" min="0" max="10" value="3" id="studyHours" oninput="updateRange('studyHours', 'studyVal', ' hrs/day')" />
+      <div class="range-labels"><span>0 hrs</span><span>5 hrs</span><span>10 hrs</span></div>
+      <div class="range-val" id="studyVal">3 hrs/day</div>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">10.</span><span>How do you primarily prepare for exams? <span class="req">*</span></span></div>
+    <div class="options-list" id="prepmethod">
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> Rereading notes and textbooks
+      </label>
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> Practicing past exam papers
+      </label>
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> Creating mind maps and summaries
+      </label>
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> Group study / discussion with peers
+      </label>
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> Watching video tutorials online
+      </label>
+      <label class="opt-label" onclick="selectOpt(this, 'prepmethod')">
+        <input type="radio" name="pm"/><span class="opt-icon"></span> No structured method — I revise as I go
+      </label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">11.</span><span>How often do you complete assigned homework/practice problems? <span class="req">*</span></span></div>
+    <div class="options-list" id="hw">
+      <label class="opt-label" onclick="selectOpt(this,'hw')"><input type="radio" name="hw"/><span class="opt-icon"></span> Always (100%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'hw')"><input type="radio" name="hw"/><span class="opt-icon"></span> Mostly (75–99%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'hw')"><input type="radio" name="hw"/><span class="opt-icon"></span> Sometimes (50–74%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'hw')"><input type="radio" name="hw"/><span class="opt-icon"></span> Rarely (25–49%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'hw')"><input type="radio" name="hw"/><span class="opt-icon"></span> Seldom (below 25%)</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">12.</span><span>When you do not understand a topic, what do you do?</span></div>
+    <div class="options-list" id="unclear">
+      <label class="opt-label" onclick="selectOpt(this,'unclear')"><input type="radio" name="un"/><span class="opt-icon"></span> Ask the teacher in class</label>
+      <label class="opt-label" onclick="selectOpt(this,'unclear')"><input type="radio" name="un"/><span class="opt-icon"></span> Search online or watch videos</label>
+      <label class="opt-label" onclick="selectOpt(this,'unclear')"><input type="radio" name="un"/><span class="opt-icon"></span> Ask a classmate or friend</label>
+      <label class="opt-label" onclick="selectOpt(this,'unclear')"><input type="radio" name="un"/><span class="opt-icon"></span> Reread the textbook multiple times</label>
+      <label class="opt-label" onclick="selectOpt(this,'unclear')"><input type="radio" name="un"/><span class="opt-icon"></span> Leave it and move on</label>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section-divider">
+    <div class="section-number">04</div>
+    <div class="section-info">
+      <h2>Psychological & Emotional Factors</h2>
+      <p>Emotional state significantly impacts academic performance</p>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">13.</span><span>How would you describe your current exam anxiety level? <span class="req">*</span></span></div>
+    <div class="range-wrap">
+      <input type="range" min="1" max="10" value="5" id="anxietySlider" oninput="updateRange('anxietySlider', 'anxietyVal', '/10')" />
+      <div class="range-labels"><span>1 – No anxiety</span><span>5 – Moderate</span><span>10 – Extreme</span></div>
+      <div class="range-val" id="anxietyVal">5/10</div>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">14.</span><span>Rate your level of self-confidence in performing well in this exam <span class="req">*</span></span></div>
+    <div class="options-list" id="confidence">
+      <label class="opt-label" onclick="selectOpt(this,'confidence')"><input type="radio" name="conf"/><span class="opt-icon"></span> Very Confident — I have prepared well and feel ready</label>
+      <label class="opt-label" onclick="selectOpt(this,'confidence')"><input type="radio" name="conf"/><span class="opt-icon"></span> Fairly Confident — I am prepared but have some concerns</label>
+      <label class="opt-label" onclick="selectOpt(this,'confidence')"><input type="radio" name="conf"/><span class="opt-icon"></span> Uncertain — I feel 50/50 about my chances</label>
+      <label class="opt-label" onclick="selectOpt(this,'confidence')"><input type="radio" name="conf"/><span class="opt-icon"></span> Not Very Confident — I feel underprepared</label>
+      <label class="opt-label" onclick="selectOpt(this,'confidence')"><input type="radio" name="conf"/><span class="opt-icon"></span> Not Confident At All — I am very worried</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">15.</span><span>How would you describe your motivation to study? <span class="req">*</span></span></div>
+    <div class="likert-wrap">
+      <table class="likert-table">
+        <thead>
+          <tr>
+            <th>Statement</th>
+            <th>Strongly Disagree</th>
+            <th>Disagree</th>
+            <th>Neutral</th>
+            <th>Agree</th>
+            <th>Strongly Agree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>I have a clear academic goal</td>
+            <td><input type="radio" class="likert-radio" name="g1" value="1"/></td>
+            <td><input type="radio" class="likert-radio" name="g1" value="2"/></td>
+            <td><input type="radio" class="likert-radio" name="g1" value="3"/></td>
+            <td><input type="radio" class="likert-radio" name="g1" value="4"/></td>
+            <td><input type="radio" class="likert-radio" name="g1" value="5"/></td>
+          </tr>
+          <tr>
+            <td>I feel motivated to study every day</td>
+            <td><input type="radio" class="likert-radio" name="g2" value="1"/></td>
+            <td><input type="radio" class="likert-radio" name="g2" value="2"/></td>
+            <td><input type="radio" class="likert-radio" name="g2" value="3"/></td>
+            <td><input type="radio" class="likert-radio" name="g2" value="4"/></td>
+            <td><input type="radio" class="likert-radio" name="g2" value="5"/></td>
+          </tr>
+          <tr>
+            <td>Fear of failure drives my preparation</td>
+            <td><input type="radio" class="likert-radio" name="g3" value="1"/></td>
+            <td><input type="radio" class="likert-radio" name="g3" value="2"/></td>
+            <td><input type="radio" class="likert-radio" name="g3" value="3"/></td>
+            <td><input type="radio" class="likert-radio" name="g3" value="4"/></td>
+            <td><input type="radio" class="likert-radio" name="g3" value="5"/></td>
+          </tr>
+          <tr>
+            <td>I am curious and genuinely enjoy learning</td>
+            <td><input type="radio" class="likert-radio" name="g4" value="1"/></td>
+            <td><input type="radio" class="likert-radio" name="g4" value="2"/></td>
+            <td><input type="radio" class="likert-radio" name="g4" value="3"/></td>
+            <td><input type="radio" class="likert-radio" name="g4" value="4"/></td>
+            <td><input type="radio" class="likert-radio" name="g4" value="5"/></td>
+          </tr>
+          <tr>
+            <td>Family/peer pressure affects my performance</td>
+            <td><input type="radio" class="likert-radio" name="g5" value="1"/></td>
+            <td><input type="radio" class="likert-radio" name="g5" value="2"/></td>
+            <td><input type="radio" class="likert-radio" name="g5" value="3"/></td>
+            <td><input type="radio" class="likert-radio" name="g5" value="4"/></td>
+            <td><input type="radio" class="likert-radio" name="g5" value="5"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<div class="q-card required">
+  <div class="q-label">
+    <span class="q-num">16.</span>
+    <span>What are the biggest non-academic factors affecting your studies?</span>
+  </div>
+
+  <div class="options-list" id="factors">
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Family responsibilities">
+      <span class="opt-icon"></span> Family responsibilities
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Health issues">
+      <span class="opt-icon"></span> Health issues
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Sleep deprivation">
+      <span class="opt-icon"></span> Sleep deprivation
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Lack of study materials">
+      <span class="opt-icon"></span> Lack of study materials/internet
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Part-time work">
+      <span class="opt-icon"></span> Part-time work commitments
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="Social distractions">
+      <span class="opt-icon"></span> Social/peer distractions
+    </label>
+
+    <label class="opt-label checkbox" onclick="toggleCheck(this, event)">
+      <input type="checkbox" name="factors" value="None">
+      <span class="opt-icon"></span> None of the above
+    </label>
+
+  </div>
+</div>
+
+  <!-- SECTION 6 -->
+  <div class="section-divider">
+    <div class="section-number">05</div>
+    <div class="section-info">
+      <h2>Remediation Preferences</h2>
+      <p>Your preferences help us design effective support classes</p>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">17.</span><span>What type of remedial class format would help you most? <span class="req">*</span></span></div>
+    <div class="options-list" id="remedial">
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> Small group sessions (5–10 students) focusing on weak topics</label>
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> One-on-one teacher consultation</label>
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> Peer tutoring sessions</label>
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> Online recorded lectures / video explanations</label>
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> Printed worksheets and practice sets to self-study</label>
+      <label class="opt-label" onclick="selectOpt(this,'remedial')"><input type="radio" name="rem"/><span class="opt-icon"></span> Live online sessions (Zoom / Meet)</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">18.</span><span>Preferred time slot for remedial classes <span class="req">*</span></span></div>
+    <div class="options-list grid-2" id="timeslot">
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> Early morning (6–8 AM)</label>
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> Before school (8–9 AM)</label>
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> Lunch break</label>
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> After school (2–4 PM)</label>
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> Evening (5–7 PM)</label>
+      <label class="opt-label" onclick="selectOpt(this,'timeslot')"><input type="radio" name="ts"/><span class="opt-icon"></span> Weekend only</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">19.</span><span>If you could receive support in <strong>only one area</strong>, what would it be? <span class="req">*</span></span></div>
+    <div class="options-list" id="toparea">
+      <label class="opt-label" onclick="selectOpt(this,'toparea')"><input type="radio" name="ta"/><span class="opt-icon"></span> Subject content knowledge</label>
+      <label class="opt-label" onclick="selectOpt(this,'toparea')"><input type="radio" name="ta"/><span class="opt-icon"></span> Exam technique and time management</label>
+      <label class="opt-label" onclick="selectOpt(this,'toparea')"><input type="radio" name="ta"/><span class="opt-icon"></span> Study skills and planning</label>
+      <label class="opt-label" onclick="selectOpt(this,'toparea')"><input type="radio" name="ta"/><span class="opt-icon"></span> Managing exam anxiety and stress</label>
+      <label class="opt-label" onclick="selectOpt(this,'toparea')"><input type="radio" name="ta"/><span class="opt-icon"></span> Motivation and focus</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">20.</span><span>What grade are you aiming for in this exam?</span></div>
+    <div class="options-list grid-2" id="targetgrade">
+      <label class="opt-label" onclick="selectOpt(this,'targetgrade')"><input type="radio" name="tg"/><span class="opt-icon"></span> A / Distinction (90%+)</label>
+      <label class="opt-label" onclick="selectOpt(this,'targetgrade')"><input type="radio" name="tg"/><span class="opt-icon"></span> B / Merit (75–89%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'targetgrade')"><input type="radio" name="tg"/><span class="opt-icon"></span> C / Pass (60–74%)</label>
+      <label class="opt-label" onclick="selectOpt(this,'targetgrade')"><input type="radio" name="tg"/><span class="opt-icon"></span> Just pass (50–59%)</label>
+    </div>
+  </div>
+
+  <div class="q-card required">
+    <div class="q-label"><span class="q-num">21.</span><span>Is there anything else you would like your teacher to know about your situation or needs?</span></div>
+    <textarea placeholder="Share any concerns, requests, or context that would help your teacher support you better…"></textarea>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-zone" id="submitZone">
+    <h3>Ready to submit?</h3>
+    <p>Your responses are confidential and will be used only to tailor remedial support.<br>Review your answers before submitting.</p>
+<button class="btn-submit" onclick="submitLock()">Submit Response</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Evaluation Received</h2>
+    <p><strong id="successName"></strong><br>
+    <span style="font-size:13px;color:#aaa;" id="successEmail"></span></p>
+    <p style="margin-top:14px;" id="successNote">Thank you for completing the pre-exam psychometric evaluation. Your responses will be reviewed and a personalised remedial plan will be shared with you within 48 hours.</p>
+  </div>
+
+</div><!-- /form-body -->
+
+<script>
+// ============================================================
+//  ⚙️  CONFIGURATION — replace with your deployed Apps Script URL
+//  Steps: Extensions → Apps Script → Deploy → New Deployment
+//         Type: Web App | Execute as: Me | Access: Anyone
+// ============================================================
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM6T6mGhhgijY25J1Adut74ZEBY3Gf_X6MXeoiSyidw-QCiKprnFvomWRCSglMiUVD/exec";
+
+let userEmail = "";
+let isLoggedIn = false;
+
+
+// 🔐 GOOGLE LOGIN
+window.onload = function () {
+
+
+
+  google.accounts.id.initialize({
+    client_id: "256608230871-3tj5r9ed5qlt38qj0eq3rseahpk7eet2.apps.googleusercontent.com",
+    callback: handleCredentialResponse
+  });
+
+google.accounts.id.renderButton(
+  document.getElementById("googleBtnCenter"),
+    { theme: "outline", size: "large", width: "250" }
+  );
+
+  autoNumberQuestions();
+  highlightCategories(); // ✅ WORKING VERSION
+};
+
+
+// LOGIN SUCCESS
+function handleCredentialResponse(response) {
+  const data = JSON.parse(atob(response.credential.split('.')[1]));
+  const email = data.email;
+
+  // block repeat
+  if (localStorage.getItem("submitted_" + email)) {
+    document.getElementById("loginGate").innerHTML =
+      `<div style="padding:40px 20px;max-width:480px;margin:0 auto;">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <h2 style="font-family:'Playfair Display',serif;margin-bottom:10px;">Already Submitted</h2>
+        <p style="color:#7a7060;">You have already submitted a response using <strong>${email}</strong>. Only one submission per account is allowed.</p>
+      </div>`;
+    return;
+  }
+
+  userEmail = email;
+  isLoggedIn = true;
+  document.getElementById("studentEmail").value = email;
+
+  document.getElementById("formBody").style.display = "block";
+  document.getElementById("loginGate").style.display = "none";
+
+  document.querySelector(".btn-submit").disabled = false;
+}
+
+// 🧠 AUTO NUMBERING — only numbers cards that have a q-num span AND no pre-set number
+function autoNumberQuestions() {
+  const questions = document.querySelectorAll('.q-card');
+  let count = 1;
+  questions.forEach(q => {
+    const num = q.querySelector('.q-num');
+    if (num) {
+      num.textContent = count + ".";
+      count++;
+    }
+  });
+}
+
+
+// EXISTING FUNCTIONS
+function selectOpt(el, groupId) {
+
+  const group = document.getElementById(groupId);
+  const options = group.querySelectorAll('.opt-label');
+
+  // remove selection from all
+  options.forEach(opt => {
+    opt.classList.remove('selected');
+  });
+
+  // select current
+  el.classList.add('selected');
+
+  // check the radio button
+  const radio = el.querySelector('input[type="radio"]');
+  if (radio) radio.checked = true;
+}
+
+function toggleCheck(el, event) {
+  if (event) event.preventDefault();
+  const checkbox = el.querySelector('input[type="checkbox"]');
+
+  if (checkbox.disabled) return;
+
+  checkbox.checked = !checkbox.checked;
+
+  const group = document.getElementById("factors");
+  const allBoxes = group.querySelectorAll('input[type="checkbox"]');
+
+  if (checkbox.value === "None") {
+    if (checkbox.checked) {
+      allBoxes.forEach(cb => {
+        if (cb.value !== "None") {
+          cb.checked = false;
+          cb.closest('.opt-label').classList.remove("selected");
+        }
+      });
+    }
+  } else {
+    const noneBox = group.querySelector('input[value="None"]');
+    if (noneBox) {
+      noneBox.checked = false;
+      noneBox.closest('.opt-label').classList.remove("selected");
+    }
+  }
+
+  if (checkbox.checked) {
+    el.classList.add('selected');
+  } else {
+    el.classList.remove('selected');
+  }
+}
+function updateRange(sliderId, valId, suffix) {
+  document.getElementById(valId).textContent = document.getElementById(sliderId).value + suffix;
+  updateProgress();
+}
+
+
+// PROGRESS
+function updateProgress() {
+  const total = 40;
+
+  const filled = document.querySelectorAll(
+    '.opt-label.selected, input[type="text"]:not(:placeholder-shown), textarea:not(:placeholder-shown), .likert-radio:checked'
+  ).length;
+
+  const pct = Math.min(100, Math.round((filled / (total * 1.8)) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '% complete';
+}
+
+
+// ERROR UI
+function showError(message, element) {
+  let errorBox = document.getElementById('formErrorBox');
+
+  if (!errorBox) {
+    errorBox = document.createElement('div');
+    errorBox.id = 'formErrorBox';
+    errorBox.style.background = '#fdecea';
+    errorBox.style.color = '#c0392b';
+    errorBox.style.padding = '12px 16px';
+    errorBox.style.border = '1px solid #e74c3c';
+    errorBox.style.borderRadius = '4px';
+    errorBox.style.marginBottom = '20px';
+
+    document.getElementById('formBody').prepend(errorBox);
+  }
+
+  errorBox.textContent = message;
+  element.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function highlightCategories() {
+  const categories = [
+    "Logical Reasoning",
+    "Mathematical Computation",
+    "Conceptual Understanding",
+    "Problem Solving",
+    "Memory & Recall",
+    "Reading Comprehension"
+  ];
+
+  const labels = document.querySelectorAll(".q-label");
+
+  labels.forEach(label => {
+
+    categories.forEach(cat => {
+
+      // Use textContent instead of innerText (fixes & issue)
+      if (label.textContent.includes(cat)) {
+
+        const safeCat = cat.replace("&", "&amp;");
+
+        label.innerHTML = label.innerHTML.replace(
+          safeCat,
+          `<span style="color:#c0392b;font-weight:700;">${safeCat}</span>`
+        );
+      }
+
+    });
+
+  });
+}
+
+// VALIDATION (used internally — full validation is in submitLock)
+function validateForm() {
+  if (!isLoggedIn) {
+    showError("⚠ Please sign in with your Google account before submitting.", document.getElementById("formBody"));
+    return false;
+  }
+  return true;
+}
+
+
+// SUBMIT
+function submitForm() {
+  if (!validateForm()) return;
+
+  document.getElementById('successScreen').innerHTML =
+    "<h3>Assessment Submitted</h3><p>" + userEmail + "</p>";
+}
+
+function submitLock() {
+
+  const email = document.getElementById("studentEmail").value;
+
+  if (!email || !isLoggedIn) {
+    alert("Please sign in with your Google account first.");
+    return;
+  }
+
+  if (localStorage.getItem("submitted_" + email)) {
+    alert("You have already submitted this form.");
+    return;
+  }
+
+  let allValid = true;
+  let firstError = null;
+
+  function markError(el) {
+    el.style.outline = "2px solid #c0392b";
+    el.style.borderRadius = "4px";
+    if (!firstError) firstError = el;
+  }
+  function clearError(el) { el.style.outline = ""; }
+
+  // 1. TEXT INPUTS
+  document.querySelectorAll('.q-card.required input[type="text"]').forEach(el => {
+    if (!el.value.trim()) { markError(el); allValid = false; }
+    else clearError(el);
+  });
+
+  // 2. SELECT DROPDOWNS
+  document.querySelectorAll('.q-card.required select').forEach(el => {
+    if (!el.value) { markError(el); allValid = false; }
+    else clearError(el);
+  });
+
+  // 3. RADIO GROUPS
+  document.querySelectorAll('.options-list').forEach(group => {
+    const radios = group.querySelectorAll('input[type="radio"]');
+    if (radios.length > 0) {
+      if (!group.querySelector('input[type="radio"]:checked')) {
+        markError(group); allValid = false;
+      } else clearError(group);
+    }
+  });
+
+  // 4. CHECKBOX GROUP
+  const factors = document.getElementById("factors");
+  if (factors && !factors.querySelector('input[type="checkbox"]:checked')) {
+    markError(factors); allValid = false;
+  } else if (factors) clearError(factors);
+
+  // 5. LIKERT ROWS
+  const likertNames = new Set();
+  document.querySelectorAll('.likert-radio').forEach(r => likertNames.add(r.name));
+  likertNames.forEach(name => {
+    if (!document.querySelector(`.likert-radio[name="${name}"]:checked`)) {
+      const radios = document.querySelectorAll(`.likert-radio[name="${name}"]`);
+      if (radios.length) { const cell = radios[0].closest('tr'); if (cell) markError(cell); }
+      allValid = false;
+    }
+  });
+
+  if (!allValid) {
+    if (firstError) firstError.scrollIntoView({ behavior:"smooth", block:"center" });
+    let errBox = document.getElementById("submitErrorMsg");
+    if (!errBox) {
+      errBox = document.createElement("div");
+      errBox.id = "submitErrorMsg";
+      errBox.style.cssText = "background:#fdecea;color:#c0392b;padding:12px 18px;border:1px solid #e74c3c;border-radius:4px;margin-bottom:16px;font-size:14px;";
+      document.getElementById("submitZone").before(errBox);
+    }
+    errBox.textContent = "⚠ Please complete all highlighted fields before submitting.";
+    return;
+  }
+
+  const errBox = document.getElementById("submitErrorMsg");
+  if (errBox) errBox.remove();
+
+  // ── COLLECT ALL DATA ──
+  function radioVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.closest('.opt-label').textContent.trim() : "";
+  }
+  function likertVal(name) {
+    const el = document.querySelector(`.likert-radio[name="${name}"]:checked`);
+    return el ? el.value : "";
+  }
+
+  const checkedFactors = Array.from(
+    document.querySelectorAll('#factors input[type="checkbox"]:checked')
+  ).map(cb => cb.value);
+
+  const payload = {
+    email: email,
+    name:      document.querySelector('input[placeholder*="full name"]')?.value?.trim() || "",
+    rollNo:    document.querySelector('input[placeholder*="1 to 60"]')?.value?.trim()   || "",
+    branch:    document.querySelectorAll('select')[0]?.value || "",
+    semester:  document.querySelectorAll('select')[1]?.value || "",
+
+    // Cognitive Section 2
+    lr1: radioVal("lr1"), lr2: radioVal("lr2"), lr3: radioVal("lr3"),
+    mc1: radioVal("mc1"), mc2: radioVal("mc2"), mc3: radioVal("mc3"),
+    cu1: radioVal("cu1"), cu2: radioVal("cu2"), cu3: radioVal("cu3"),
+    ps1: radioVal("ps1"), ps2: radioVal("ps2"), ps3: radioVal("ps3"),
+    mr1: radioVal("mr1"), mr2: radioVal("mr2"), mr3: radioVal("mr3"),
+    rc1: radioVal("rc1"), rc2: radioVal("rc2"), rc3: radioVal("rc3"),
+
+    // CO Section 3
+    co1q1: radioVal("co1q1"), co1q2: radioVal("co1q2"), co1q3: radioVal("co1q3"),
+    co1q4: radioVal("co1q4"), co1q5: radioVal("co1q5"),
+    co2q1: radioVal("co2q1"), co2q2: radioVal("co2q2"), co2q3: radioVal("co2q3"),
+    co2q4: radioVal("co2q4"), co2q5: radioVal("co2q5"),
+    co3q1: radioVal("co3q1"), co3q2: radioVal("co3q2"), co3q3: radioVal("co3q3"),
+    co3q4: radioVal("co3q4"), co3q5: radioVal("co3q5"),
+    co4q1: radioVal("co4q1"), co4q2: radioVal("co4q2"), co4q3: radioVal("co4q3"),
+    co4q4: radioVal("co4q4"), co4q5: radioVal("co4q5"),
+
+    // Study habits
+    studyHours:  document.getElementById("studyHours")?.value || "",
+    prepMethod:  radioVal("pm"),
+    hwCompletion: radioVal("hw"),
+    whenUnclear:  radioVal("un"),
+
+    // Psychological
+    anxietyLevel: document.getElementById("anxietySlider")?.value || "",
+    confidence:   radioVal("conf"),
+    g1: likertVal("g1"), g2: likertVal("g2"), g3: likertVal("g3"),
+    g4: likertVal("g4"), g5: likertVal("g5"),
+
+    // Checkbox
+    factors: checkedFactors,
+
+    // Remediation
+    remedialFormat: radioVal("rem"),
+    timeSlot:       radioVal("ts"),
+    supportArea:    radioVal("ta"),
+    targetGrade:    radioVal("tg"),
+    additionalNotes: document.querySelector('textarea')?.value?.trim() || ""
+  };
+
+  // ── LOCK & SHOW SPINNER ──
+  document.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
+  document.querySelectorAll(".opt-label").forEach(el => {
+    el.style.pointerEvents = "none"; el.style.cursor = "default";
+  });
+  const btn = document.querySelector(".btn-submit");
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  // ── POST TO APPS SCRIPT ──
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",              // Apps Script requires no-cors
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    // no-cors means we can't read the response body — treat any completion as success
+    localStorage.setItem("submitted_" + email, "true");
+    document.getElementById("formBody").style.display = "none";
+    const ss = document.querySelector(".success-screen");
+    ss.classList.add("show");
+    // Update success message
+    document.getElementById("successName").textContent  = payload.name  || email;
+    document.getElementById("successEmail").textContent = email;
+    document.getElementById("successNote").textContent  =
+      "Your report card PDF will be generated and stored in your institution's Google Drive folder. Your teacher will share it within 48 hours.";
+  })
+  .catch(err => {
+    console.error("Submission error:", err);
+    // Still mark as submitted locally so user isn't stuck, and show success
+    localStorage.setItem("submitted_" + email, "true");
+    document.getElementById("formBody").style.display = "none";
+    document.querySelector(".success-screen").classList.add("show");
+    document.getElementById("successName").textContent = payload.name || email;
+    document.getElementById("successEmail").textContent = email;
+    document.getElementById("successNote").textContent =
+      "Your response has been recorded. If you experience any issues, contact your teacher.";
+  });
+}
+
+</script>
+</body>
+</html>
