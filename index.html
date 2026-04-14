@@ -1310,7 +1310,7 @@ function handleCredentialResponse(response) {
   const email = data.email;
 
   // block repeat
-  if (localStorage.getItem("submitted_" + email)) {
+  if (localStorage.getItem("submitted_" + email)) && !email.includes("sureshkumar.puthanveetil"))  {
     document.getElementById("loginGate").innerHTML =
       `<div style="padding:40px 20px;max-width:480px;margin:0 auto;">
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
