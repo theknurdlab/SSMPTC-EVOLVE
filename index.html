@@ -1279,7 +1279,7 @@
 //         Type: Web App | Execute as: Me | Access: Anyone
 // ============================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM6T6mGhhgijY25J1Adut74ZEBY3Gf_X6MXeoiSyidw-QCiKprnFvomWRCSglMiUVD/exec";
-
+const TEST_MODE = true;
 let userEmail = "";
 let isLoggedIn = false;
 
@@ -1310,7 +1310,7 @@ function handleCredentialResponse(response) {
   const email = data.email;
 
   // block repeat
-  if (localStorage.getItem("submitted_" + email)) && !email.includes("sureshkumar.puthanveetil"))  {
+  if (!TEST_MODE && localStorage.getItem("submitted_" + email))  {
     document.getElementById("loginGate").innerHTML =
       `<div style="padding:40px 20px;max-width:480px;margin:0 auto;">
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
@@ -1660,7 +1660,9 @@ function submitLock() {
   .catch(err => {
     console.error("Submission error:", err);
     // Still mark as submitted locally so user isn't stuck, and show success
+	if (!TEST_MODE) {  
     localStorage.setItem("submitted_" + email, "true");
+	}
     document.getElementById("formBody").style.display = "none";
     document.querySelector(".success-screen").classList.add("show");
     document.getElementById("successName").textContent = payload.name || email;
