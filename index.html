@@ -1710,6 +1710,7 @@ function submitLock() {
 const APPS_SCRIPT_URL_V2 = APPS_SCRIPT_URL;
 const TEST_MODE_V2 = false;
 const LOGO_URL_V2 = "https://www.ssmpoly.ac.in/source/Files/ssm-logo.png";
+const LOCKOUT_BYPASS_EMAILS_V2 = ["theknurdlab@gmail.com"];
 
 const COGNITIVE_ANSWER_KEY_V2 = {
   lr1: "Entire circuit stops",
@@ -1833,7 +1834,7 @@ function addRollNumberHintV2() {
 function handleCredentialResponse(response) {
   const data = JSON.parse(atob(response.credential.split(".")[1]));
   const email = data.email;
-  if (!TEST_MODE_V2 && localStorage.getItem("submitted_" + email)) {
+  if (!TEST_MODE_V2 && !isLockoutBypassedV2(email) && localStorage.getItem("submitted_" + email)) {
     document.getElementById("loginGate").innerHTML = `
       <div style="padding:40px 20px;max-width:480px;margin:0 auto;">
         <div style="font-size:48px;margin-bottom:16px;">Locked</div>
@@ -2140,7 +2141,7 @@ function submitLock() {
   }
 
   const email = document.getElementById("studentEmail").value;
-  if (!TEST_MODE_V2 && localStorage.getItem("submitted_" + email)) {
+  if (!TEST_MODE_V2 && !isLockoutBypassedV2(email) && localStorage.getItem("submitted_" + email)) {
     showError("A response has already been submitted using this email address.", document.getElementById("formBody"));
     return;
   }
@@ -2197,6 +2198,10 @@ function submitLock() {
     document.getElementById("successNote").textContent =
       "The browser could not confirm completion, but the response may still have reached the server. Please contact the faculty coordinator if required.";
   });
+}
+
+function isLockoutBypassedV2(email) {
+  return LOCKOUT_BYPASS_EMAILS_V2.includes(String(email || "").trim().toLowerCase());
 }
 </script>
 </body>
