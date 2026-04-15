@@ -1710,7 +1710,7 @@ function submitLock() {
 const APPS_SCRIPT_URL_V2 = APPS_SCRIPT_URL;
 const TEST_MODE_V2 = false;
 const LOGO_URL_V2 = "https://www.ssmpoly.ac.in/source/Files/ssm-logo.png";
-const LOCKOUT_BYPASS_EMAILS_V2 = ["sureshkumar.puthanveetil@gmail.com"];
+const LOCKOUT_BYPASS_EMAILS_V2 = ["theknurdlab@gmail.com"];
 
 const COGNITIVE_ANSWER_KEY_V2 = {
   lr1: "Entire circuit stops",
@@ -1894,6 +1894,7 @@ function toggleCheck(el, event) {
 function updateRange(sliderId, valId, suffix) {
   const slider = document.getElementById(sliderId);
   const val = document.getElementById(valId);
+  if (slider) slider.dataset.touched = "true";
   if (slider && val) val.textContent = slider.value + suffix;
   clearCardErrorV2(slider ? slider.closest(".q-card") : null);
   updateProgress();
@@ -1913,6 +1914,18 @@ function bindRealtimeValidationV2() {
   document.querySelectorAll(".likert-radio").forEach(radio => {
     radio.addEventListener("change", () => {
       clearCardErrorV2(radio.closest(".q-card"));
+      updateProgress();
+    });
+  });
+
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    slider.dataset.touched = "false";
+    slider.addEventListener("input", () => {
+      slider.dataset.touched = "true";
+    });
+    slider.addEventListener("change", () => {
+      slider.dataset.touched = "true";
+      clearCardErrorV2(slider.closest(".q-card"));
       updateProgress();
     });
   });
@@ -1936,7 +1949,10 @@ function isCardCompleteV2(card) {
   if (card.querySelector("select")) {
     return Array.from(card.querySelectorAll("select")).every(select => select.value);
   }
-  if (card.querySelector('input[type="range"]')) return true;
+  if (card.querySelector('input[type="range"]')) {
+    const sliders = Array.from(card.querySelectorAll('input[type="range"]'));
+    return sliders.every(slider => slider.dataset.touched === "true");
+  }
   if (card.querySelector(".likert-radio")) {
     const names = [...new Set(Array.from(card.querySelectorAll(".likert-radio")).map(input => input.name))];
     return names.every(name => card.querySelector(`.likert-radio[name="${name}"]:checked`));
