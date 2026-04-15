@@ -96,6 +96,22 @@
     gap: 7px;
     letter-spacing: 0.05em;
   }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .brand-logo {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.97);
+    border-radius: 18px;
+    padding: 10px;
+    box-shadow: 0 18px 36px rgba(0,0,0,0.18);
+  }
   .meta-chip span.dot {
     width: 6px; height: 6px;
     background: var(--accent);
@@ -184,6 +200,10 @@
     border-color: var(--gold);
     box-shadow: 0 4px 24px rgba(13,17,23,0.07);
   }
+  .q-card.invalid {
+    border-color: #c0392b;
+    box-shadow: 0 0 0 4px rgba(192,57,43,0.08);
+  }
   .q-card.required::after {
     content: '';
     position: absolute;
@@ -192,6 +212,7 @@
     background: var(--accent);
     border-radius: 4px 0 0 4px;
   }
+  .q-card.invalid::after { background: #c0392b; }
 
   .q-label {
     font-size: 15px;
@@ -237,6 +258,17 @@
     cursor: pointer;
   }
   textarea { resize: vertical; min-height: 90px; }
+  .field-error {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #c0392b;
+    font-weight: 600;
+  }
+  .field-hint {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
 
   /* RADIO / CHECKBOX */
   .options-list { display: flex; flex-direction: column; gap: 10px; }
@@ -509,6 +541,7 @@
     .q-card { padding: 20px; }
     .options-list.grid-2 { grid-template-columns: 1fr; }
     .submit-zone { padding: 28px 20px; }
+    .brand-logo { width: 68px; height: 68px; }
   }
 </style>
 </head>
@@ -1278,7 +1311,7 @@
 //  Steps: Extensions → Apps Script → Deploy → New Deployment
 //         Type: Web App | Execute as: Me | Access: Anyone
 // ============================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM6T6mGhhgijY25J1Adut74ZEBY3Gf_X6MXeoiSyidw-QCiKprnFvomWRCSglMiUVD/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLsq7OHABxuO8gjAnN9dXhuRAFe723EcZ6cxqg6dR2iN7OWHbUi7UfhwCSxC9_uQZa/exec";
 const TEST_MODE = true;
 let userEmail = "";
 let isLoggedIn = false;
@@ -1672,6 +1705,499 @@ function submitLock() {
   });
 }
 
+</script>
+<script>
+const APPS_SCRIPT_URL_V2 = APPS_SCRIPT_URL;
+const TEST_MODE_V2 = false;
+const LOGO_URL_V2 = "https://www.ssmpoly.ac.in/source/Files/ssm-logo.png";
+
+const COGNITIVE_ANSWER_KEY_V2 = {
+  lr1: "Entire circuit stops",
+  lr2: "It glows normally",
+  lr3: "10 ohm",
+  mc1: "5A",
+  mc2: "20W",
+  mc3: "2 kWh",
+  cu1: "Electrical energy",
+  cu2: "To prevent leakage",
+  cu3: "It changes direction",
+  ps1: "2 ohm",
+  ps2: "Current exceeds limit",
+  ps3: "36W",
+  mr1: "Watt",
+  mr2: "L",
+  mr3: "3600 J",
+  rc1: "Consumes 500W at 230V",
+  rc2: "Breaks if current > 5A",
+  rc3: "Oppose current flow"
+};
+
+const CO_ANSWER_KEY_V2 = {
+  co1q1: "V = IR",
+  co1q2: "5 ohm",
+  co1q3: "2 ohm",
+  co1q4: "Cycles/sec",
+  co1q5: "AC",
+  co2q1: "cos phi",
+  co2q2: "kWh",
+  co2q3: "3600 J",
+  co2q4: "VIcos phi",
+  co2q5: "5 kWh",
+  co3q1: "Resistor",
+  co3q2: "Resistance value",
+  co3q3: "Electric Field",
+  co3q4: "Inductance",
+  co3q5: "Farad",
+  co4q1: "One direction only",
+  co4q2: "Voltage regulation",
+  co4q3: "Active region",
+  co4q4: "All inputs HIGH",
+  co4q5: "Inversion"
+};
+
+const COGNITIVE_GROUPS_V2 = {
+  "Logical Reasoning Score": ["lr1", "lr2", "lr3"],
+  "Mathematical Computation Score": ["mc1", "mc2", "mc3"],
+  "Conceptual Understanding Score": ["cu1", "cu2", "cu3"],
+  "Problem Solving Score": ["ps1", "ps2", "ps3"],
+  "Memory & Recall Score": ["mr1", "mr2", "mr3"],
+  "Reading Comprehension Score": ["rc1", "rc2", "rc3"]
+};
+
+const CO_GROUPS_V2 = {
+  "CO1 Score": ["co1q1", "co1q2", "co1q3", "co1q4", "co1q5"],
+  "CO2 Score": ["co2q1", "co2q2", "co2q3", "co2q4", "co2q5"],
+  "CO3 Score": ["co3q1", "co3q2", "co3q3", "co3q4", "co3q5"],
+  "CO4 Score": ["co4q1", "co4q2", "co4q3", "co4q4", "co4q5"]
+};
+
+window.onload = function () {
+  renderBrandingV2();
+  fixSectionNumbersV2();
+  autoNumberQuestions();
+  highlightCategoriesV2();
+  addRollNumberHintV2();
+  bindRealtimeValidationV2();
+  updateRange("studyHours", "studyVal", " hrs/day");
+  updateRange("anxietySlider", "anxietyVal", "/10");
+  updateProgress();
+
+  google.accounts.id.initialize({
+    client_id: "256608230871-3tj5r9ed5qlt38qj0eq3rseahpk7eet2.apps.googleusercontent.com",
+    callback: handleCredentialResponse
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("googleBtnCenter"),
+    { theme: "outline", size: "large", width: "250" }
+  );
+};
+
+function renderBrandingV2() {
+  const header = document.querySelector(".header");
+  if (!header) return;
+  header.innerHTML = `
+    <div class="header-top">
+      <div>
+        <div class="header-tag">Measure What Truly Matters</div>
+        <h1>SSMPTC <em>EVOLVE</em></h1>
+        <div class="header-tag" style="letter-spacing:0.08em;text-transform:none;margin-bottom:12px;">Evaluation of Versatile Learning &amp; Operational Value in Education</div>
+        <p>A professional performance-driven assessment system that evaluates students through real problem-solving, structured course-outcome attainment, and meaningful support inputs.</p>
+      </div>
+      <img class="brand-logo" src="${LOGO_URL_V2}" alt="SSMPTC Tirur logo" />
+    </div>
+    <div class="header-meta">
+      <span class="meta-chip"><span class="dot"></span> Approx. 18 minutes to complete</span>
+      <span class="meta-chip"><span class="dot"></span> 6 sections &middot; 55 prompts</span>
+      <span class="meta-chip"><span class="dot"></span> Confidential for institutional use</span>
+    </div>
+  `;
+}
+
+function fixSectionNumbersV2() {
+  const sections = document.querySelectorAll(".section-number");
+  ["01", "02", "03", "04", "05", "06"].forEach((label, index) => {
+    if (sections[index]) sections[index].textContent = label;
+  });
+}
+
+function addRollNumberHintV2() {
+  const rollInput = document.querySelector('input[placeholder*="1 to 60"]');
+  if (!rollInput || rollInput.parentElement.querySelector(".field-hint")) return;
+  const hint = document.createElement("div");
+  hint.className = "field-hint";
+  hint.textContent = "Enter only the numeric roll number, for example 17.";
+  rollInput.parentElement.appendChild(hint);
+}
+
+function handleCredentialResponse(response) {
+  const data = JSON.parse(atob(response.credential.split(".")[1]));
+  const email = data.email;
+  if (!TEST_MODE_V2 && localStorage.getItem("submitted_" + email)) {
+    document.getElementById("loginGate").innerHTML = `
+      <div style="padding:40px 20px;max-width:480px;margin:0 auto;">
+        <div style="font-size:48px;margin-bottom:16px;">Locked</div>
+        <h2 style="font-family:'Playfair Display',serif;margin-bottom:10px;">Already Submitted</h2>
+        <p style="color:#7a7060;">A response has already been submitted using <strong>${email}</strong>. Only one submission per account is allowed.</p>
+      </div>`;
+    return;
+  }
+  userEmail = email;
+  isLoggedIn = true;
+  document.getElementById("studentEmail").value = email;
+  document.getElementById("formBody").style.display = "block";
+  document.getElementById("loginGate").style.display = "none";
+  document.querySelector(".btn-submit").disabled = false;
+  updateProgress();
+}
+
+function selectOpt(el, groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll(".opt-label").forEach(opt => opt.classList.remove("selected"));
+  el.classList.add("selected");
+  const radio = el.querySelector('input[type="radio"]');
+  if (radio) radio.checked = true;
+  clearCardErrorV2(el.closest(".q-card"));
+  updateProgress();
+}
+
+function toggleCheck(el, event) {
+  if (event) event.preventDefault();
+  const checkbox = el.querySelector('input[type="checkbox"]');
+  if (!checkbox || checkbox.disabled) return;
+  checkbox.checked = !checkbox.checked;
+
+  const group = document.getElementById("factors");
+  const allBoxes = group.querySelectorAll('input[type="checkbox"]');
+  if (checkbox.value === "None" && checkbox.checked) {
+    allBoxes.forEach(cb => {
+      if (cb.value !== "None") {
+        cb.checked = false;
+        cb.closest(".opt-label").classList.remove("selected");
+      }
+    });
+  } else if (checkbox.value !== "None") {
+    const noneBox = group.querySelector('input[value="None"]');
+    if (noneBox) {
+      noneBox.checked = false;
+      noneBox.closest(".opt-label").classList.remove("selected");
+    }
+  }
+
+  el.classList.toggle("selected", checkbox.checked);
+  clearCardErrorV2(el.closest(".q-card"));
+  updateProgress();
+}
+
+function updateRange(sliderId, valId, suffix) {
+  const slider = document.getElementById(sliderId);
+  const val = document.getElementById(valId);
+  if (slider && val) val.textContent = slider.value + suffix;
+  clearCardErrorV2(slider ? slider.closest(".q-card") : null);
+  updateProgress();
+}
+
+function bindRealtimeValidationV2() {
+  document.querySelectorAll("input[type='text'], select, textarea").forEach(el => {
+    el.addEventListener("input", () => {
+      clearCardErrorV2(el.closest(".q-card"));
+      updateProgress();
+    });
+    el.addEventListener("change", () => {
+      clearCardErrorV2(el.closest(".q-card"));
+      updateProgress();
+    });
+  });
+  document.querySelectorAll(".likert-radio").forEach(radio => {
+    radio.addEventListener("change", () => {
+      clearCardErrorV2(radio.closest(".q-card"));
+      updateProgress();
+    });
+  });
+}
+
+function getTrackableCardsV2() {
+  return Array.from(document.querySelectorAll(".q-card.required")).filter(card => {
+    return card.querySelector('input[type="text"], select, input[type="range"], input[type="radio"], input[type="checkbox"], .likert-radio');
+  });
+}
+
+function isCardCompleteV2(card) {
+  if (!card) return true;
+  const textInput = card.querySelector('input[type="text"]');
+  if (textInput) {
+    const value = textInput.value.trim();
+    if (textInput.placeholder.toLowerCase().includes("full name")) return /^[a-zA-Z][a-zA-Z .'-]{2,}$/.test(value);
+    if (textInput.placeholder.includes("1 to 60")) return /^\d{1,3}$/.test(value);
+    return value !== "";
+  }
+  if (card.querySelector("select")) {
+    return Array.from(card.querySelectorAll("select")).every(select => select.value);
+  }
+  if (card.querySelector('input[type="range"]')) return true;
+  if (card.querySelector(".likert-radio")) {
+    const names = [...new Set(Array.from(card.querySelectorAll(".likert-radio")).map(input => input.name))];
+    return names.every(name => card.querySelector(`.likert-radio[name="${name}"]:checked`));
+  }
+  if (card.querySelector('#factors input[type="checkbox"]')) {
+    return !!card.querySelector('input[type="checkbox"]:checked');
+  }
+  if (card.querySelector('input[type="radio"]')) {
+    const names = [...new Set(Array.from(card.querySelectorAll('input[type="radio"]')).map(input => input.name))];
+    return names.every(name => card.querySelector(`input[name="${name}"]:checked`));
+  }
+  return true;
+}
+
+function updateProgress() {
+  const cards = getTrackableCardsV2();
+  const completed = cards.filter(card => isCardCompleteV2(card)).length;
+  const pct = cards.length ? Math.round((completed / cards.length) * 100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressLabel").textContent = `${pct}% complete (${completed}/${cards.length})`;
+}
+
+function highlightCategoriesV2() {
+  const categories = [
+    "Logical Reasoning",
+    "Mathematical Computation",
+    "Conceptual Understanding",
+    "Problem Solving",
+    "Memory & Recall",
+    "Reading Comprehension"
+  ];
+  document.querySelectorAll(".q-label").forEach(label => {
+    categories.forEach(category => {
+      if (label.innerHTML.includes(category)) {
+        label.innerHTML = label.innerHTML.replace(category, `<span style="color:#c0392b;font-weight:700;">${category}</span>`);
+      }
+    });
+  });
+}
+
+function clearCardErrorV2(card) {
+  if (!card) return;
+  card.classList.remove("invalid");
+  const error = card.querySelector(".field-error");
+  if (error) error.remove();
+}
+
+function setCardErrorV2(card, message) {
+  if (!card) return;
+  card.classList.add("invalid");
+  let error = card.querySelector(".field-error");
+  if (!error) {
+    error = document.createElement("div");
+    error.className = "field-error";
+    card.appendChild(error);
+  }
+  error.textContent = message;
+}
+
+function validateCardV2(card) {
+  clearCardErrorV2(card);
+  const textInput = card.querySelector('input[type="text"]');
+  if (textInput) {
+    const value = textInput.value.trim();
+    if (!value) return setCardErrorV2(card, "This field is required."), false;
+    if (textInput.placeholder.toLowerCase().includes("full name") && !/^[a-zA-Z][a-zA-Z .'-]{2,}$/.test(value)) {
+      return setCardErrorV2(card, "Enter a valid full name using letters only."), false;
+    }
+    if (textInput.placeholder.includes("1 to 60") && !/^\d{1,3}$/.test(value)) {
+      return setCardErrorV2(card, "Enter a valid numeric roll number."), false;
+    }
+    return true;
+  }
+  if (card.querySelector("select")) {
+    const valid = Array.from(card.querySelectorAll("select")).every(select => select.value);
+    if (!valid) return setCardErrorV2(card, "Please choose an option from the dropdown."), false;
+    return true;
+  }
+  if (card.querySelector(".likert-radio")) {
+    const names = [...new Set(Array.from(card.querySelectorAll(".likert-radio")).map(input => input.name))];
+    const valid = names.every(name => card.querySelector(`.likert-radio[name="${name}"]:checked`));
+    if (!valid) return setCardErrorV2(card, "Please answer all motivation statements."), false;
+    return true;
+  }
+  if (card.querySelector('#factors input[type="checkbox"]')) {
+    const valid = !!card.querySelector('input[type="checkbox"]:checked');
+    if (!valid) return setCardErrorV2(card, "Select at least one factor."), false;
+    return true;
+  }
+  if (card.querySelector('input[type="radio"]')) {
+    const names = [...new Set(Array.from(card.querySelectorAll('input[type="radio"]')).map(input => input.name))];
+    const valid = names.every(name => card.querySelector(`input[name="${name}"]:checked`));
+    if (!valid) return setCardErrorV2(card, "Please select one response."), false;
+    return true;
+  }
+  return true;
+}
+
+function normalizeAnswerV2(value) {
+  return String(value || "")
+    .replace(/\u00a0/g, " ")
+    .replace(/[–—]/g, "-")
+    .replace(/\u03A9|Ω/gi, " ohm")
+    .replace(/\u03C6|φ/gi, " phi")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function selectedLabelTextV2(input) {
+  const label = input ? input.closest(".opt-label") : null;
+  if (!label) return "";
+  const clone = label.cloneNode(true);
+  clone.querySelectorAll("input, .opt-icon").forEach(node => node.remove());
+  return clone.textContent.replace(/\s+/g, " ").trim();
+}
+
+function radioValV2(name) {
+  const input = document.querySelector(`input[name="${name}"]:checked`);
+  return input ? selectedLabelTextV2(input) : "";
+}
+
+function likertValV2(name) {
+  const input = document.querySelector(`.likert-radio[name="${name}"]:checked`);
+  return input ? input.value : "";
+}
+
+function computeGroupScoreV2(answerKey, keys) {
+  return keys.reduce((score, key) => {
+    return score + (normalizeAnswerV2(radioValV2(key)) === normalizeAnswerV2(answerKey[key]) ? 1 : 0);
+  }, 0);
+}
+
+function buildPayloadV2() {
+  const checkedFactors = Array.from(document.querySelectorAll('#factors input[type="checkbox"]:checked')).map(cb => cb.value);
+  const payload = {
+    email: document.getElementById("studentEmail").value || "",
+    name: document.querySelector('input[placeholder*="full name"]')?.value?.trim() || "",
+    rollNo: document.querySelector('input[placeholder*="1 to 60"]')?.value?.trim() || "",
+    branch: document.querySelectorAll("select")[0]?.value || "",
+    semester: document.querySelectorAll("select")[1]?.value || "",
+
+    lr1: radioValV2("lr1"), lr2: radioValV2("lr2"), lr3: radioValV2("lr3"),
+    mc1: radioValV2("mc1"), mc2: radioValV2("mc2"), mc3: radioValV2("mc3"),
+    cu1: radioValV2("cu1"), cu2: radioValV2("cu2"), cu3: radioValV2("cu3"),
+    ps1: radioValV2("ps1"), ps2: radioValV2("ps2"), ps3: radioValV2("ps3"),
+    mr1: radioValV2("mr1"), mr2: radioValV2("mr2"), mr3: radioValV2("mr3"),
+    rc1: radioValV2("rc1"), rc2: radioValV2("rc2"), rc3: radioValV2("rc3"),
+
+    co1q1: radioValV2("co1q1"), co1q2: radioValV2("co1q2"), co1q3: radioValV2("co1q3"), co1q4: radioValV2("co1q4"), co1q5: radioValV2("co1q5"),
+    co2q1: radioValV2("co2q1"), co2q2: radioValV2("co2q2"), co2q3: radioValV2("co2q3"), co2q4: radioValV2("co2q4"), co2q5: radioValV2("co2q5"),
+    co3q1: radioValV2("co3q1"), co3q2: radioValV2("co3q2"), co3q3: radioValV2("co3q3"), co3q4: radioValV2("co3q4"), co3q5: radioValV2("co3q5"),
+    co4q1: radioValV2("co4q1"), co4q2: radioValV2("co4q2"), co4q3: radioValV2("co4q3"), co4q4: radioValV2("co4q4"), co4q5: radioValV2("co4q5"),
+
+    studyHours: document.getElementById("studyHours")?.value || "",
+    prepMethod: radioValV2("pm"),
+    hwCompletion: radioValV2("hw"),
+    whenUnclear: radioValV2("un"),
+
+    anxietyLevel: document.getElementById("anxietySlider")?.value || "",
+    confidence: radioValV2("conf"),
+    g1: likertValV2("g1"), g2: likertValV2("g2"), g3: likertValV2("g3"), g4: likertValV2("g4"), g5: likertValV2("g5"),
+    factors: checkedFactors,
+
+    remedialFormat: radioValV2("rem"),
+    timeSlot: radioValV2("ts"),
+    supportArea: radioValV2("ta"),
+    targetGrade: radioValV2("tg"),
+    additionalNotes: document.querySelector("textarea")?.value?.trim() || ""
+  };
+
+  const frontendScores = {};
+  Object.entries(COGNITIVE_GROUPS_V2).forEach(([label, keys]) => {
+    frontendScores[label] = computeGroupScoreV2(COGNITIVE_ANSWER_KEY_V2, keys);
+  });
+  Object.entries(CO_GROUPS_V2).forEach(([label, keys]) => {
+    frontendScores[label] = computeGroupScoreV2(CO_ANSWER_KEY_V2, keys);
+  });
+  frontendScores["Cognitive Total Score"] = Object.keys(COGNITIVE_GROUPS_V2).reduce((sum, label) => sum + frontendScores[label], 0);
+  frontendScores["Cognitive %"] = Math.round((frontendScores["Cognitive Total Score"] / 18) * 100);
+  frontendScores["Overall CO Score"] = Object.keys(CO_GROUPS_V2).reduce((sum, label) => sum + frontendScores[label], 0);
+  frontendScores["Overall CO %"] = Math.round((frontendScores["Overall CO Score"] / 20) * 100);
+  payload.frontendScores = frontendScores;
+  return payload;
+}
+
+function lockFormV2() {
+  document.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
+  document.querySelectorAll(".opt-label").forEach(el => {
+    el.style.pointerEvents = "none";
+    el.style.cursor = "default";
+  });
+  const btn = document.querySelector(".btn-submit");
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
+}
+
+function submitLock() {
+  if (!isLoggedIn || !document.getElementById("studentEmail").value) {
+    showError("Please sign in with your Google account before submitting.", document.getElementById("loginGate"));
+    return;
+  }
+
+  const email = document.getElementById("studentEmail").value;
+  if (!TEST_MODE_V2 && localStorage.getItem("submitted_" + email)) {
+    showError("A response has already been submitted using this email address.", document.getElementById("formBody"));
+    return;
+  }
+
+  const cards = getTrackableCardsV2();
+  let firstInvalid = null;
+  cards.forEach(card => {
+    const valid = validateCardV2(card);
+    if (!valid && !firstInvalid) firstInvalid = card;
+  });
+
+  if (firstInvalid) {
+    let errBox = document.getElementById("submitErrorMsg");
+    if (!errBox) {
+      errBox = document.createElement("div");
+      errBox.id = "submitErrorMsg";
+      errBox.style.cssText = "background:#fdecea;color:#c0392b;padding:12px 18px;border:1px solid #e74c3c;border-radius:4px;margin-bottom:16px;font-size:14px;";
+      document.getElementById("submitZone").before(errBox);
+    }
+    errBox.textContent = "Please complete the highlighted fields before submitting.";
+    firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+    updateProgress();
+    return;
+  }
+
+  const errBox = document.getElementById("submitErrorMsg");
+  if (errBox) errBox.remove();
+
+  const payload = buildPayloadV2();
+  lockFormV2();
+
+  fetch(APPS_SCRIPT_URL_V2, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    localStorage.setItem("submitted_" + email, "true");
+    document.getElementById("formBody").style.display = "none";
+    const success = document.querySelector(".success-screen");
+    success.classList.add("show");
+    document.getElementById("successName").textContent = payload.name || email;
+    document.getElementById("successEmail").textContent = email;
+    document.getElementById("successNote").textContent =
+      "Your response has been recorded. Cognitive subsection scores and CO attainment were processed during submission, and the report card PDF can now be generated from the backend.";
+  })
+  .catch(error => {
+    console.error("Submission error:", error);
+    document.getElementById("formBody").style.display = "none";
+    document.querySelector(".success-screen").classList.add("show");
+    document.getElementById("successName").textContent = payload.name || email;
+    document.getElementById("successEmail").textContent = email;
+    document.getElementById("successNote").textContent =
+      "The browser could not confirm completion, but the response may still have reached the server. Please contact the faculty coordinator if required.";
+  });
+}
 </script>
 </body>
 </html>
